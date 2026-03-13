@@ -1,0 +1,61 @@
+{
+  "blocks": [
+    {
+      "id": 0,
+      "name": "air",
+      "solid": false,
+      "breakable": false
+    },
+        {
+      "id": 1,
+      "name": "dirtGrass",
+      "solid": true,
+      "breakable": true,
+      "dropEntity": "dirt",
+      "chanceDropSeed": 0.25,
+      "health": 12
+    },
+    {
+      "id": 2,
+      "name": "dirt",
+      "solid": true,
+      "breakable": true,
+      "dropEntity": "dirt",
+      "chanceDropSeed": 0.25,
+      "health": 12
+    },
+    {
+      "id": 3,
+      "name": "stone",
+      "solid": true,
+      "breakable": true,
+      "dropEntity": "stone",
+      "chanceDropSeed": 0.05,
+      "health": 25,
+      "maximumDiamondDrop": 2
+    },
+    {
+      "id": 4,
+      "name": "lava",
+      "solid": true,
+      "breakable": true,
+      "health": 30
+    },
+    {
+      "id": 5,
+      "name": "small_lock",
+      "solid": true,
+      "breakable": true,
+      "health": 30,
+      "protectionRadius": 5
+    },
+    {
+      "id": 6,
+      "name": "big_lock",
+      "solid": true,
+      "breakable": true,
+      "health": 50,
+      "protectionRadius": 20
+    }
+  ]
+}
