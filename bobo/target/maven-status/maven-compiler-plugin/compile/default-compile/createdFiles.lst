@@ -1,5 +1,12 @@
-com/example/scheduler/GameLoop.class
-com/example/gameplay/block/BlockDefinition.class
-com/example/gameplay/block/BlockRegistry$BlockFile.class
+com/example/world/World.class
 com/example/App.class
-com/example/gameplay/block/BlockRegistry.class
+com/example/block/behavior/BehaviorRegistry.class
+com/example/block/behavior/BlockBehavior.class
+com/example/world/Tile.class
+com/example/block/BlockRegistry$BlockFile.class
+com/example/block/BlockService.class
+com/example/block/BlockRegistry.class
+com/example/block/BlockType.class
+com/example/scheduler/GameLoop.class
+com/example/block/BlockDefinition.class
+com/example/player/Player.class

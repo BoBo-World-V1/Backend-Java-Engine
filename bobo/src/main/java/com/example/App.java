@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.gameplay.block.BlockRegistry;
+import com.example.block.BlockRegistry;
 
 /**
  * Hello world!

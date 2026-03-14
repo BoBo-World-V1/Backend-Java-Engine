@@ -1,4 +1,7 @@
-package com.example.gameplay.block;
+package com.example.block;
+
+import java.lang.ProcessBuilder.Redirect.Type;
+import java.util.Optional;
 
 public class BlockDefinition {
 
@@ -11,6 +14,7 @@ public class BlockDefinition {
     private Integer health;
     private Integer protectionRadius;
     private Integer maximumDiamondDrop;
+    private Optional<BlockType> type;
 
     public int getId() {
         return id;
@@ -26,6 +30,10 @@ public class BlockDefinition {
 
     public boolean isBreakable() {
         return breakable;
+    }
+
+    public BlockType getType(){
+        return type.orElse(BlockType.NORMAL);
     }
 
     public String getDropEntity() {

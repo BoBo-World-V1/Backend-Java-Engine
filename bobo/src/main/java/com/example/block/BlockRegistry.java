@@ -1,4 +1,4 @@
-package com.example.gameplay.block;
+package com.example.block;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -13,9 +13,6 @@ public class BlockRegistry {
     private static class BlockFile {
         public BlockDefinition[] blocks;
     }
-
-
-
     public void load(){
         try{
             ObjectMapper mapper = new ObjectMapper();
@@ -35,8 +32,10 @@ public class BlockRegistry {
     }
 
 
-    public Map<Integer, BlockDefinition> getBlocks() {
-        return blocks;
+    public BlockDefinition get(int BlockId){
+        return blocks.get(BlockId);
     }
+
+
     
 }

@@ -6,7 +6,7 @@
       "solid": false,
       "breakable": false
     },
-        {
+    {
       "id": 1,
       "name": "dirtGrass",
       "solid": true,

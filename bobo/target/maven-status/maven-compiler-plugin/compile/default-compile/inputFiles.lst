@@ -1,4 +1,11 @@
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/App.java
-/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/gameplay/block/BlockDefinition.java
-/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/gameplay/block/BlockRegistry.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/BlockDefinition.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/BlockRegistry.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/BlockService.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/BlockType.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/BehaviorRegistry.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/BlockBehavior.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/player/Player.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/scheduler/GameLoop.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/Tile.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/World.java
