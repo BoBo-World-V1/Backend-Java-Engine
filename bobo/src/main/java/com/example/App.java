@@ -4,6 +4,7 @@ import com.example.block.BlockService;
 import com.example.block.BlockRegistry;
 import com.example.block.behavior.BehaviorRegistry;
 import com.example.block.behavior.DefaultBehaviorRegistry;
+import com.example.entity.EntityRegistry;
 import com.example.player.Player;
 import com.example.player.PlayerService;
 import com.example.world.World;
@@ -24,11 +25,13 @@ public class App
     {
         BLOCKS = new BlockRegistry();
         BLOCKS.load();
+        EntityRegistry entities = new EntityRegistry();
+        entities.load();
 
-        BehaviorRegistry behaviorRegistry = DefaultBehaviorRegistry.create();
+        BehaviorRegistry behaviorRegistry = DefaultBehaviorRegistry.create(BLOCKS);
         PlayerService playerService = new PlayerService(behaviorRegistry);
-        WorldManager worldManager = new WorldManager(new WorldGenerator(), playerService);
-        BlockService blockService = new BlockService(behaviorRegistry, BLOCKS);
+        WorldManager worldManager = new WorldManager(new WorldGenerator(), playerService, behaviorRegistry);
+        BlockService blockService = new BlockService(behaviorRegistry, BLOCKS, entities);
 
         World world = worldManager.createWorld("starter-world", DEFAULT_WORLD_WIDTH, DEFAULT_WORLD_HEIGHT);
         Player player = new Player(1, "builder");

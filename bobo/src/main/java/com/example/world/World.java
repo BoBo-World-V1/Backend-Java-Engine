@@ -1,4 +1,5 @@
 package com.example.world;
+import com.example.entity.WorldDrop;
 import com.example.player.Player;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,7 @@ public class World {
 
     private final List<Player> players = new ArrayList<>();
     private final List<AreaLock> areaLocks = new ArrayList<>();
+    private final List<WorldDrop> drops = new ArrayList<>();
     private final Set<Integer> worldAdmins = new HashSet<>();
     private int spawnX;
     private int spawnY;
@@ -116,6 +118,21 @@ public class World {
 
     public List<AreaLock> getAreaLocks() {
         return Collections.unmodifiableList(areaLocks);
+    }
+
+    public List<WorldDrop> getDrops() {
+        return Collections.unmodifiableList(drops);
+    }
+
+    public void spawnDrop(WorldDrop drop) {
+        drops.add(drop);
+        dirty = true;
+    }
+
+    public void removeDrop(WorldDrop drop) {
+        if (drops.remove(drop)) {
+            dirty = true;
+        }
     }
 
     public String getName() {

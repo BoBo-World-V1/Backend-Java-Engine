@@ -1,0 +1,34 @@
+{
+  "entities": [
+    {
+      "id": "dirt",
+      "name": "Dirt Block",
+      "stackable": true
+    },
+    {
+      "id": "dirt_seed",
+      "name": "Dirt Seed",
+      "stackable": true
+    },
+    {
+      "id": "stone",
+      "name": "Stone Block",
+      "stackable": true
+    },
+    {
+      "id": "stone_seed",
+      "name": "Stone Seed",
+      "stackable": true
+    },
+    {
+      "id": "lava",
+      "name": "Lava Block",
+      "stackable": true
+    },
+    {
+      "id": "lava_seed",
+      "name": "Lava Seed",
+      "stackable": true
+    }
+  ]
+}

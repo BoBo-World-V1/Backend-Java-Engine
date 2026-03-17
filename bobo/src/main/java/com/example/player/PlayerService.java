@@ -2,7 +2,9 @@ package com.example.player;
 
 import com.example.block.behavior.BehaviorRegistry;
 import com.example.block.behavior.BlockBehavior;
+import com.example.entity.WorldDrop;
 import com.example.world.World;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ public class PlayerService {
     private static final float JUMP_VELOCITY = 8.0f;
     private static final float MAX_FALL_SPEED = 20.0f;
     private static final float MAX_POSITION_ERROR = 1.5f;
+    private static final float DROP_PICKUP_RADIUS = 0.5f;
     private final BehaviorRegistry behaviorRegistry;
 
     public PlayerService() {
@@ -57,6 +60,7 @@ public class PlayerService {
 
         if (moved) {
             applyTouchBehaviors(player, world);
+            collectNearbyDrops(player, world);
             handleDeathIfNeeded(player, world);
             world.markDirty();
         }
@@ -130,6 +134,7 @@ public class PlayerService {
         player.setVelocityY(velocityY);
         player.setOnGround(onGround || isGrounded(world, player.getX(), player.getY()));
         applyTouchBehaviors(player, world);
+        collectNearbyDrops(player, world);
         handleDeathIfNeeded(player, world);
         world.markDirty();
     }
@@ -146,6 +151,7 @@ public class PlayerService {
 
         player.setPosition(x, y);
         applyTouchBehaviors(player, world);
+        collectNearbyDrops(player, world);
         handleDeathIfNeeded(player, world);
         world.markDirty();
         return true;
@@ -263,5 +269,19 @@ public class PlayerService {
         }
         respawnPlayer(player);
         world.markDirty();
+    }
+
+    private void collectNearbyDrops(Player player, World world) {
+        for (WorldDrop drop : new ArrayList<>(world.getDrops())) {
+            float deltaX = drop.getX() - player.getX();
+            float deltaY = drop.getY() - player.getY();
+            float distanceSquared = (deltaX * deltaX) + (deltaY * deltaY);
+            if (distanceSquared > DROP_PICKUP_RADIUS * DROP_PICKUP_RADIUS) {
+                continue;
+            }
+
+            player.addItem(drop.getEntityId(), drop.getAmount());
+            world.removeDrop(drop);
+        }
     }
 }

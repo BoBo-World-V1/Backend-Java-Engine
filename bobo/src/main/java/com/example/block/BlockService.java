@@ -2,6 +2,8 @@ package com.example.block;
 
 import com.example.block.behavior.BehaviorRegistry;
 import com.example.block.behavior.BlockBehavior;
+import com.example.entity.EntityRegistry;
+import com.example.entity.WorldDrop;
 import com.example.player.Player;
 import com.example.world.AreaLock;
 import com.example.world.Tile;
@@ -12,10 +14,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public class BlockService {
     private static final float MAX_INTERACTION_DISTANCE = 2.5f;
     private final BehaviorRegistry behaviorRegistry;
-    private final BlockRegistry blockRegistry; 
-    public BlockService (BehaviorRegistry behaviorRegistry, BlockRegistry blockRegistry){
+    private final BlockRegistry blockRegistry;
+    private final EntityRegistry entityRegistry;
+
+    public BlockService(BehaviorRegistry behaviorRegistry, BlockRegistry blockRegistry) {
+        this(behaviorRegistry, blockRegistry, new EntityRegistry());
+    }
+
+    public BlockService (BehaviorRegistry behaviorRegistry, BlockRegistry blockRegistry, EntityRegistry entityRegistry){
         this.behaviorRegistry = behaviorRegistry;
         this.blockRegistry = blockRegistry;
+        this.entityRegistry = entityRegistry;
     } 
 
     public void placeBlock(Player player, World world, int x, int y, int blockID){
@@ -45,12 +54,21 @@ public class BlockService {
         Tile tile = world.getTile(x, y);
         int blockId = tile.getForeground();
         BlockDefinition block = blockRegistry.get(blockId);
+        BlockBehavior behavior = behaviorRegistry.get(blockId);
+        int requiredHealth = block.getHealth();
+        if (behavior != null) {
+            requiredHealth = Math.max(1, behavior.getBreakHealth(world, x, y, block));
+        }
         int totalDamage = tile.getDamage() + Math.max(1, damage);
 
-        if (totalDamage < block.getHealth()) {
+        if (totalDamage < requiredHealth) {
             tile.setDamage(totalDamage);
             world.markDirty();
             return false;
+        }
+
+        if (behavior != null) {
+            behavior.onBroken(world, x, y, player, block);
         }
 
         tile.setForeground(World.AIR_BLOCK_ID);
@@ -58,13 +76,10 @@ public class BlockService {
         world.markDirty();
         unregisterOwnershipOnBreak(world, x, y, blockId);
 
-        BlockBehavior behavior = behaviorRegistry.get(blockId);
-        if (behavior != null) {
-            behavior.onBroken(world, x, y, player);
+        if (behavior == null || !behavior.usesCustomDrops()) {
+            maybeDropEntity(world, block, x, y);
+            maybeDropSeed(world, block, x, y);
         }
-
-        maybeDropEntity(block, x, y);
-        maybeDropSeed(block, x, y);
         notifyNeighbors(world, x, y, player);
         return true;
     }
@@ -80,6 +95,9 @@ public class BlockService {
         BlockDefinition newBlock = blockRegistry.get(blockID);
         if (newBlock == null){
             throw new IllegalArgumentException("Block not found");
+        }
+        if (newBlock.getType() == BlockType.CROP) {
+            validateCropPlacement(world, x, y);
         }
         Tile tile = world.getTile(x, y);
 
@@ -108,6 +126,12 @@ public class BlockService {
         }
         if (!block.isBreakable()) {
             throw new IllegalStateException("Block is not breakable");
+        }
+    }
+
+    private void validateCropPlacement(World world, int x, int y) {
+        if (!world.isInBounds(x, y + 1) || !world.isSolid(x, y + 1)) {
+            throw new IllegalStateException("Seeds and crops must be placed on top of a solid block");
         }
     }
 
@@ -232,18 +256,16 @@ public class BlockService {
         }
     }
 
-    private void maybeDropEntity (BlockDefinition block, int x, int y){
+    private void maybeDropEntity (World world, BlockDefinition block, int x, int y){
         String dropEntity = block.getDropEntity();
-        if(percentChance(block.getChanceDropSeed())){
-            System.out.println("Drop Item");
-            //TODO Implement the entity method later
+        if (dropEntity != null && entityRegistry.has(dropEntity)) {
+            world.spawnDrop(new WorldDrop(dropEntity, x + 0.5f, y + 0.5f, 1));
         }
     }
-    private void maybeDropSeed (BlockDefinition block, int x, int y){
-        // String dropEntity = block.getDrop();
-        if(percentChance(block.getChanceDropSeed())){
-            System.out.println("Drop Item");
-            //TODO Implement the entity method later
+    private void maybeDropSeed (World world, BlockDefinition block, int x, int y){
+        String dropSeedEntity = block.getDropSeedEntity();
+        if(dropSeedEntity != null && entityRegistry.has(dropSeedEntity) && percentChance(block.getChanceDropSeed())){
+            world.spawnDrop(new WorldDrop(dropSeedEntity, x + 0.5f, y + 0.5f, 1));
         }
     }
     private boolean percentChance(float chance) {

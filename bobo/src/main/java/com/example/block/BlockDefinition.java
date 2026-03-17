@@ -7,10 +7,13 @@ public class BlockDefinition {
     private boolean solid;
     private boolean breakable;
     private String dropEntity;
+    private String dropSeedEntity;
     private float chanceDropSeed;
     private Integer health;
     private Integer protectionRadius;
     private Integer maximumDiamondDrop;
+    private Integer maximumHarvestDropAmount;
+    private Integer growthTicksRequired;
     private BlockType type;
 
     public int getId() {
@@ -41,6 +44,10 @@ public class BlockDefinition {
         return chanceDropSeed;
     }
 
+    public String getDropSeedEntity() {
+        return dropSeedEntity;
+    }
+
     public int getHealth() {
         return health == null ? 0 : health;
     }
@@ -51,5 +58,13 @@ public class BlockDefinition {
 
     public int getMaximumDiamondDrop() {
         return maximumDiamondDrop == null ? 0 : maximumDiamondDrop;
+    }
+
+    public int getMaximumHarvestDropAmount() {
+        return maximumHarvestDropAmount == null ? 1 : Math.max(1, maximumHarvestDropAmount);
+    }
+
+    public int getGrowthTicksRequired() {
+        return growthTicksRequired == null ? 3 : Math.max(1, growthTicksRequired);
     }
 }

@@ -12,6 +12,7 @@
       "solid": true,
       "breakable": true,
       "dropEntity": "dirt",
+      "dropSeedEntity": "dirt_seed",
       "chanceDropSeed": 0.25,
       "health": 12
     },
@@ -21,6 +22,7 @@
       "solid": true,
       "breakable": true,
       "dropEntity": "dirt",
+      "dropSeedEntity": "dirt_seed",
       "chanceDropSeed": 0.25,
       "health": 12
     },
@@ -30,6 +32,7 @@
       "solid": true,
       "breakable": true,
       "dropEntity": "stone",
+      "dropSeedEntity": "stone_seed",
       "chanceDropSeed": 0.05,
       "health": 25,
       "maximumDiamondDrop": 2
@@ -78,6 +81,44 @@
       "name": "bedrock",
       "solid": true,
       "breakable": false
+    },
+    {
+      "id": 10,
+      "name": "stone_tree",
+      "solid": false,
+      "breakable": true,
+      "dropEntity": "stone",
+      "dropSeedEntity": "stone_seed",
+      "chanceDropSeed": 0.5,
+      "health": 8,
+      "maximumHarvestDropAmount": 4,
+      "type": "CROP"
+    },
+    {
+      "id": 11,
+      "name": "dirt_tree",
+      "solid": false,
+      "breakable": true,
+      "dropEntity": "dirt",
+      "dropSeedEntity": "dirt_seed",
+      "chanceDropSeed": 0.6,
+      "health": 6,
+      "maximumHarvestDropAmount": 3,
+      "growthTicksRequired": 2,
+      "type": "CROP"
+    },
+    {
+      "id": 12,
+      "name": "lava_tree",
+      "solid": false,
+      "breakable": true,
+      "dropEntity": "lava",
+      "dropSeedEntity": "lava_seed",
+      "chanceDropSeed": 0.4,
+      "health": 10,
+      "maximumHarvestDropAmount": 2,
+      "growthTicksRequired": 4,
+      "type": "CROP"
     }
   ]
 }

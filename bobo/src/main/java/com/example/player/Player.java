@@ -1,5 +1,8 @@
 package com.example.player;
 import com.example.world.World;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Player {
@@ -21,6 +24,7 @@ public class Player {
     private boolean onGround;
     private int health = MAX_HEALTH;
     private int diamondCount;
+    private final Map<String, Integer> inventory = new HashMap<>();
 
     private World world;
 
@@ -120,6 +124,21 @@ public class Player {
 
     public void setDiamondCount(int diamondCount) {
         this.diamondCount = Math.max(0, diamondCount);
+    }
+
+    public Map<String, Integer> getInventory() {
+        return Collections.unmodifiableMap(inventory);
+    }
+
+    public int getItemCount(String entityId) {
+        return inventory.getOrDefault(entityId, 0);
+    }
+
+    public void addItem(String entityId, int amount) {
+        if (amount <= 0) {
+            return;
+        }
+        inventory.merge(entityId, amount, Integer::sum);
     }
 
     public void applyDamage(int damage) {
