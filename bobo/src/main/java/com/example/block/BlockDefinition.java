@@ -1,8 +1,5 @@
 package com.example.block;
 
-import java.lang.ProcessBuilder.Redirect.Type;
-import java.util.Optional;
-
 public class BlockDefinition {
 
     private int id;
@@ -14,7 +11,7 @@ public class BlockDefinition {
     private Integer health;
     private Integer protectionRadius;
     private Integer maximumDiamondDrop;
-    private Optional<BlockType> type;
+    private BlockType type;
 
     public int getId() {
         return id;
@@ -33,7 +30,7 @@ public class BlockDefinition {
     }
 
     public BlockType getType(){
-        return type.orElse(BlockType.NORMAL);
+        return type == null ? BlockType.NORMAL : type;
     }
 
     public String getDropEntity() {

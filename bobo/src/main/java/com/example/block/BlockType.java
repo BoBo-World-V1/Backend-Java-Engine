@@ -2,6 +2,7 @@ package com.example.block;
 
 public enum BlockType {
     NORMAL,
-    LOCK,
+    WORLD_LOCK,
+    AREA_LOCK,
     CROP,
 }

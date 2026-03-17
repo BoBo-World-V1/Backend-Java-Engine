@@ -2,6 +2,9 @@ com/example/world/World.class
 com/example/App.class
 com/example/block/behavior/BehaviorRegistry.class
 com/example/block/behavior/BlockBehavior.class
+com/example/world/WorldGenerator.class
+com/example/block/behavior/SurfaceSoilBehavior.class
+com/example/world/WorldManager.class
 com/example/world/Tile.class
 com/example/block/BlockRegistry$BlockFile.class
 com/example/block/BlockService.class
@@ -9,4 +12,7 @@ com/example/block/BlockRegistry.class
 com/example/block/BlockType.class
 com/example/scheduler/GameLoop.class
 com/example/block/BlockDefinition.class
+com/example/player/PlayerService.class
 com/example/player/Player.class
+com/example/world/AreaLock.class
+com/example/block/behavior/DefaultBehaviorRegistry.class

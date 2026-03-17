@@ -9,6 +9,11 @@ public class Player {
 
     private float x;
     private float y;
+    private float velocityX;
+    private float velocityY;
+    private float horizontalInput;
+    private boolean jumpQueued;
+    private boolean onGround;
 
     private World world;
 
@@ -36,6 +41,46 @@ public class Player {
     public void setPosition(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+
+    public float getVelocityX() {
+        return velocityX;
+    }
+
+    public void setVelocityX(float velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public float getVelocityY() {
+        return velocityY;
+    }
+
+    public void setVelocityY(float velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public float getHorizontalInput() {
+        return horizontalInput;
+    }
+
+    public void setHorizontalInput(float horizontalInput) {
+        this.horizontalInput = horizontalInput;
+    }
+
+    public boolean isJumpQueued() {
+        return jumpQueued;
+    }
+
+    public void setJumpQueued(boolean jumpQueued) {
+        this.jumpQueued = jumpQueued;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
     }
 
     public World getWorld() {

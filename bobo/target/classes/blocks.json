@@ -47,7 +47,8 @@
       "solid": true,
       "breakable": true,
       "health": 30,
-      "protectionRadius": 5
+      "protectionRadius": 5,
+      "type": "AREA_LOCK"
     },
     {
       "id": 6,
@@ -55,7 +56,16 @@
       "solid": true,
       "breakable": true,
       "health": 50,
-      "protectionRadius": 20
+      "protectionRadius": 20,
+      "type": "AREA_LOCK"
+    },
+    {
+      "id": 7,
+      "name": "world_lock",
+      "solid": true,
+      "breakable": true,
+      "health": 80,
+      "type": "WORLD_LOCK"
     }
   ]
 }

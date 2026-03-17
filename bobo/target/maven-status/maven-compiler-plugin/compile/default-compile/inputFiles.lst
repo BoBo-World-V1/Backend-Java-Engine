@@ -5,7 +5,13 @@
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/BlockType.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/BehaviorRegistry.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/BlockBehavior.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/DefaultBehaviorRegistry.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/SurfaceSoilBehavior.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/player/Player.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/player/PlayerService.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/scheduler/GameLoop.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/AreaLock.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/Tile.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/World.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/WorldGenerator.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/world/WorldManager.java

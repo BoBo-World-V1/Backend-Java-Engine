@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.example.world.WorldSystemsTest
+-------------------------------------------------------------------------------
+Tests run: 13, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.155 s <<< FAILURE! - in com.example.world.WorldSystemsTest
+coveredGrassTurnsBackIntoDirtAfterPlacement(com.example.world.WorldSystemsTest)  Time elapsed: 0.005 s  <<< ERROR!
+java.lang.IllegalStateException: Cannot place a block inside the player position
+	at com.example.world.WorldSystemsTest.coveredGrassTurnsBackIntoDirtAfterPlacement(WorldSystemsTest.java:315)
+
