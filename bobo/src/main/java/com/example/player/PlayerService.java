@@ -27,27 +27,9 @@ public class PlayerService {
     }
 
     public void spawnPlayer(Player player, World world) {
-        int spawnX = world.getSpawnX();
-        int spawnY = world.getSpawnY();
-        float[] spawnPosition = findSpawnPosition(world, player, spawnX, spawnY);
-        float worldX = spawnPosition[0];
-        float worldY = spawnPosition[1];
-
-        if (!canOccupy(world, player, worldX, worldY)) {
-            throw new IllegalStateException("World spawn point is occupied");
-        }
-
         world.addPlayer(player);
         player.setWorld(world);
-        player.setPosition(worldX, worldY);
-        player.setVelocityX(0.0f);
-        player.setVelocityY(0.0f);
-        player.setHorizontalInput(0.0f);
-        player.setHazardCooldownSeconds(0.0f);
-        player.setSecondsSinceDamage(Player.MAX_HEALTH / (float) Player.MAX_HEALTH * 5.0f);
-        player.setJumpQueued(false);
-        player.setOnGround(isGrounded(world, worldX, worldY));
-        player.setHealth(Player.MAX_HEALTH);
+        respawnPlayer(player);
     }
 
     public boolean move(Player player, int deltaX, int deltaY) {
@@ -75,6 +57,7 @@ public class PlayerService {
 
         if (moved) {
             applyTouchBehaviors(player, world);
+            handleDeathIfNeeded(player, world);
             world.markDirty();
         }
         return moved;
@@ -110,7 +93,7 @@ public class PlayerService {
 
         float velocityX = player.getHorizontalInput() * MOVE_SPEED;
         float velocityY = player.getVelocityY();
-        boolean onGround = isGrounded(world, player.getX(), player.getY());
+        boolean onGround = player.isOnGround() || isGrounded(world, player.getX(), player.getY());
         player.setHazardCooldownSeconds(player.getHazardCooldownSeconds() - dt);
         player.tickRecovery(dt);
 
@@ -147,6 +130,7 @@ public class PlayerService {
         player.setVelocityY(velocityY);
         player.setOnGround(onGround || isGrounded(world, player.getX(), player.getY()));
         applyTouchBehaviors(player, world);
+        handleDeathIfNeeded(player, world);
         world.markDirty();
     }
 
@@ -162,8 +146,25 @@ public class PlayerService {
 
         player.setPosition(x, y);
         applyTouchBehaviors(player, world);
+        handleDeathIfNeeded(player, world);
         world.markDirty();
         return true;
+    }
+
+    public void respawnPlayer(Player player) {
+        World world = requireWorld(player);
+        float worldX = world.getSpawnX() + SPAWN_OFFSET;
+        float worldY = world.getSpawnY() + SPAWN_OFFSET;
+
+        player.setPosition(worldX, worldY);
+        player.setVelocityX(0.0f);
+        player.setVelocityY(0.0f);
+        player.setHorizontalInput(0.0f);
+        player.setHazardCooldownSeconds(0.0f);
+        player.setSecondsSinceDamage(5.0f);
+        player.setJumpQueued(false);
+        player.setOnGround(isGrounded(world, worldX, worldY));
+        player.setHealth(Player.MAX_HEALTH);
     }
 
     private World requireWorld(Player player) {
@@ -254,5 +255,13 @@ public class PlayerService {
         if (behavior != null) {
             behavior.onPlayerTouch(world, tileX, tileY, player);
         }
+    }
+
+    private void handleDeathIfNeeded(Player player, World world) {
+        if (player.getHealth() > 0) {
+            return;
+        }
+        respawnPlayer(player);
+        world.markDirty();
     }
 }

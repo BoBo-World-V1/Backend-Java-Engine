@@ -74,6 +74,9 @@ public class BlockService {
         if(!world.isInBounds(x, y)){
             throw new IllegalArgumentException("Placement cannot be out of bound");
         }
+        if (world.isSpawnStructure(x, y)) {
+            throw new IllegalStateException("Spawn structure cannot be modified");
+        }
         BlockDefinition newBlock = blockRegistry.get(blockID);
         if (newBlock == null){
             throw new IllegalArgumentException("Block not found");
@@ -89,6 +92,9 @@ public class BlockService {
         validateWorldOwnership(world, x, y);
         if (!world.isInBounds(x, y)) {
             throw new IllegalArgumentException("Breaking cannot be out of bound");
+        }
+        if (world.isSpawnStructure(x, y)) {
+            throw new IllegalStateException("Spawn structure cannot be modified");
         }
 
         Tile tile = world.getTile(x, y);

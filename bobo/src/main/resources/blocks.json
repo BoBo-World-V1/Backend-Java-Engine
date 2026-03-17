@@ -66,6 +66,18 @@
       "breakable": true,
       "health": 80,
       "type": "WORLD_LOCK"
+    },
+    {
+      "id": 8,
+      "name": "spawn_door",
+      "solid": false,
+      "breakable": false
+    },
+    {
+      "id": 9,
+      "name": "bedrock",
+      "solid": true,
+      "breakable": false
     }
   ]
 }

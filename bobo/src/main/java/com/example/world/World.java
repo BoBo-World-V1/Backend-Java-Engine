@@ -21,6 +21,10 @@ public class World {
     private final Set<Integer> worldAdmins = new HashSet<>();
     private int spawnX;
     private int spawnY;
+    private Integer spawnDoorX;
+    private Integer spawnDoorY;
+    private Integer spawnBedrockX;
+    private Integer spawnBedrockY;
     private long tick;
     private Integer worldOwnerId;
     private Integer worldLockX;
@@ -140,6 +144,28 @@ public class World {
         }
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+    }
+
+    public void setSpawnStructure(int doorX, int doorY, int bedrockX, int bedrockY) {
+        if (!isInBounds(doorX, doorY) || !isInBounds(bedrockX, bedrockY)) {
+            throw new IllegalArgumentException("Spawn structure is out of bounds");
+        }
+        this.spawnDoorX = doorX;
+        this.spawnDoorY = doorY;
+        this.spawnBedrockX = bedrockX;
+        this.spawnBedrockY = bedrockY;
+    }
+
+    public boolean isSpawnDoor(int x, int y) {
+        return spawnDoorX != null && spawnDoorY != null && spawnDoorX == x && spawnDoorY == y;
+    }
+
+    public boolean isSpawnBedrock(int x, int y) {
+        return spawnBedrockX != null && spawnBedrockY != null && spawnBedrockX == x && spawnBedrockY == y;
+    }
+
+    public boolean isSpawnStructure(int x, int y) {
+        return isSpawnDoor(x, y) || isSpawnBedrock(x, y);
     }
 
     public boolean hasWorldOwner() {
