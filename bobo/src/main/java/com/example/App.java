@@ -25,9 +25,9 @@ public class App
         BLOCKS = new BlockRegistry();
         BLOCKS.load();
 
-        PlayerService playerService = new PlayerService();
-        WorldManager worldManager = new WorldManager(new WorldGenerator(), playerService);
         BehaviorRegistry behaviorRegistry = DefaultBehaviorRegistry.create();
+        PlayerService playerService = new PlayerService(behaviorRegistry);
+        WorldManager worldManager = new WorldManager(new WorldGenerator(), playerService);
         BlockService blockService = new BlockService(behaviorRegistry, BLOCKS);
 
         World world = worldManager.createWorld("starter-world", DEFAULT_WORLD_WIDTH, DEFAULT_WORLD_HEIGHT);

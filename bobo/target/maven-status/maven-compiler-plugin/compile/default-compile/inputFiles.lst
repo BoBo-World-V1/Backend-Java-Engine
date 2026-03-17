@@ -6,6 +6,7 @@
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/BehaviorRegistry.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/BlockBehavior.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/DefaultBehaviorRegistry.java
+/Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/LavaBlockBehavior.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/block/behavior/SurfaceSoilBehavior.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/player/Player.java
 /Users/dinataing/Documents/bobo-world/Backend-Java-Engine/bobo/src/main/java/com/example/player/PlayerService.java

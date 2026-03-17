@@ -3,6 +3,9 @@ import com.example.world.World;
 
 
 public class Player {
+    public static final int MAX_HEALTH = 100;
+    private static final float FULL_HEAL_DELAY_SECONDS = 5.0f;
+
 
     private final int id;
     private final String username;
@@ -12,8 +15,12 @@ public class Player {
     private float velocityX;
     private float velocityY;
     private float horizontalInput;
+    private float hazardCooldownSeconds;
+    private float secondsSinceDamage = FULL_HEAL_DELAY_SECONDS;
     private boolean jumpQueued;
     private boolean onGround;
+    private int health = MAX_HEALTH;
+    private int diamondCount;
 
     private World world;
 
@@ -67,6 +74,22 @@ public class Player {
         this.horizontalInput = horizontalInput;
     }
 
+    public float getHazardCooldownSeconds() {
+        return hazardCooldownSeconds;
+    }
+
+    public void setHazardCooldownSeconds(float hazardCooldownSeconds) {
+        this.hazardCooldownSeconds = Math.max(0.0f, hazardCooldownSeconds);
+    }
+
+    public float getSecondsSinceDamage() {
+        return secondsSinceDamage;
+    }
+
+    public void setSecondsSinceDamage(float secondsSinceDamage) {
+        this.secondsSinceDamage = Math.max(0.0f, secondsSinceDamage);
+    }
+
     public boolean isJumpQueued() {
         return jumpQueued;
     }
@@ -81,6 +104,51 @@ public class Player {
 
     public void setOnGround(boolean onGround) {
         this.onGround = onGround;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = Math.max(0, Math.min(MAX_HEALTH, health));
+    }
+
+    public int getDiamondCount() {
+        return diamondCount;
+    }
+
+    public void setDiamondCount(int diamondCount) {
+        this.diamondCount = Math.max(0, diamondCount);
+    }
+
+    public void applyDamage(int damage) {
+        if (damage <= 0 || health == 0) {
+            return;
+        }
+
+        setHealth(health - damage);
+        secondsSinceDamage = 0.0f;
+
+        if (health == 0) {
+            loseDiamondsOnDeath();
+        }
+    }
+
+    public void tickRecovery(float deltaSeconds) {
+        secondsSinceDamage += Math.max(0.0f, deltaSeconds);
+        if (secondsSinceDamage >= FULL_HEAL_DELAY_SECONDS && health < MAX_HEALTH) {
+            setHealth(MAX_HEALTH);
+        }
+    }
+
+    private void loseDiamondsOnDeath() {
+        if (diamondCount <= 0) {
+            return;
+        }
+
+        int diamondsLost = Math.max(1, (int) Math.ceil(diamondCount * 0.10));
+        diamondCount = Math.max(0, diamondCount - diamondsLost);
     }
 
     public World getWorld() {

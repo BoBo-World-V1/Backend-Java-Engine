@@ -4,6 +4,7 @@ com/example/block/behavior/BehaviorRegistry.class
 com/example/block/behavior/BlockBehavior.class
 com/example/world/WorldGenerator.class
 com/example/block/behavior/SurfaceSoilBehavior.class
+com/example/block/behavior/LavaBlockBehavior.class
 com/example/world/WorldManager.class
 com/example/world/Tile.class
 com/example/block/BlockRegistry$BlockFile.class

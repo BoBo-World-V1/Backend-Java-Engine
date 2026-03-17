@@ -1,6 +1,10 @@
 package com.example.player;
 
+import com.example.block.behavior.BehaviorRegistry;
+import com.example.block.behavior.BlockBehavior;
 import com.example.world.World;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlayerService {
     private static final float SPAWN_OFFSET = 0.5f;
@@ -12,6 +16,15 @@ public class PlayerService {
     private static final float JUMP_VELOCITY = 8.0f;
     private static final float MAX_FALL_SPEED = 20.0f;
     private static final float MAX_POSITION_ERROR = 1.5f;
+    private final BehaviorRegistry behaviorRegistry;
+
+    public PlayerService() {
+        this(new BehaviorRegistry());
+    }
+
+    public PlayerService(BehaviorRegistry behaviorRegistry) {
+        this.behaviorRegistry = behaviorRegistry;
+    }
 
     public void spawnPlayer(Player player, World world) {
         int spawnX = world.getSpawnX();
@@ -30,8 +43,11 @@ public class PlayerService {
         player.setVelocityX(0.0f);
         player.setVelocityY(0.0f);
         player.setHorizontalInput(0.0f);
+        player.setHazardCooldownSeconds(0.0f);
+        player.setSecondsSinceDamage(Player.MAX_HEALTH / (float) Player.MAX_HEALTH * 5.0f);
         player.setJumpQueued(false);
         player.setOnGround(isGrounded(world, worldX, worldY));
+        player.setHealth(Player.MAX_HEALTH);
     }
 
     public boolean move(Player player, int deltaX, int deltaY) {
@@ -58,6 +74,7 @@ public class PlayerService {
         }
 
         if (moved) {
+            applyTouchBehaviors(player, world);
             world.markDirty();
         }
         return moved;
@@ -94,6 +111,8 @@ public class PlayerService {
         float velocityX = player.getHorizontalInput() * MOVE_SPEED;
         float velocityY = player.getVelocityY();
         boolean onGround = isGrounded(world, player.getX(), player.getY());
+        player.setHazardCooldownSeconds(player.getHazardCooldownSeconds() - dt);
+        player.tickRecovery(dt);
 
         if (player.isJumpQueued() && onGround) {
             velocityY = -JUMP_VELOCITY;
@@ -127,6 +146,7 @@ public class PlayerService {
         player.setVelocityX(velocityX);
         player.setVelocityY(velocityY);
         player.setOnGround(onGround || isGrounded(world, player.getX(), player.getY()));
+        applyTouchBehaviors(player, world);
         world.markDirty();
     }
 
@@ -141,6 +161,7 @@ public class PlayerService {
         }
 
         player.setPosition(x, y);
+        applyTouchBehaviors(player, world);
         world.markDirty();
         return true;
     }
@@ -206,5 +227,32 @@ public class PlayerService {
             }
         }
         throw new IllegalStateException("Could not find an open spawn position");
+    }
+
+    private void applyTouchBehaviors(Player player, World world) {
+        Set<String> touchedBlocks = new HashSet<>();
+        touchBehaviorAt(world, player, player.getX() - PLAYER_HALF_WIDTH - 0.02f, player.getY(), touchedBlocks);
+        touchBehaviorAt(world, player, player.getX() + PLAYER_HALF_WIDTH + 0.02f, player.getY(), touchedBlocks);
+        touchBehaviorAt(world, player, player.getX(), player.getY() - PLAYER_HALF_HEIGHT - 0.02f, touchedBlocks);
+        touchBehaviorAt(world, player, player.getX(), player.getY() + PLAYER_HALF_HEIGHT + 0.02f, touchedBlocks);
+    }
+
+    private void touchBehaviorAt(World world, Player player, float sampleX, float sampleY, Set<String> touchedBlocks) {
+        int tileX = (int) Math.floor(sampleX);
+        int tileY = (int) Math.floor(sampleY);
+        if (!world.isInBounds(tileX, tileY)) {
+            return;
+        }
+
+        String key = tileX + ":" + tileY;
+        if (!touchedBlocks.add(key)) {
+            return;
+        }
+
+        int blockId = world.getTile(tileX, tileY).getForeground();
+        BlockBehavior behavior = behaviorRegistry.get(blockId);
+        if (behavior != null) {
+            behavior.onPlayerTouch(world, tileX, tileY, player);
+        }
     }
 }

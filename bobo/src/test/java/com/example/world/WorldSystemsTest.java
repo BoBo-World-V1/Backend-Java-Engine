@@ -9,6 +9,7 @@ import static org.junit.Assert.fail;
 import com.example.block.BlockRegistry;
 import com.example.block.BlockService;
 import com.example.block.behavior.DefaultBehaviorRegistry;
+import com.example.block.behavior.LavaBlockBehavior;
 import com.example.block.behavior.SurfaceSoilBehavior;
 import com.example.player.Player;
 import com.example.player.PlayerService;
@@ -314,5 +315,61 @@ public class WorldSystemsTest {
         assertEquals(SurfaceSoilBehavior.GRASS_BLOCK_ID, world.getTile(x, grassY).getForeground());
         blockService.placeBlock(player, world, x, placeY, SurfaceSoilBehavior.DIRT_BLOCK_ID);
         assertEquals(SurfaceSoilBehavior.DIRT_BLOCK_ID, world.getTile(x, grassY).getForeground());
+    }
+
+    @Test
+    public void lavaDamagesAndKnocksBackPlayerOnTouch() {
+        BlockRegistry blockRegistry = new BlockRegistry();
+        blockRegistry.load();
+        PlayerService playerService = new PlayerService(DefaultBehaviorRegistry.create());
+        BlockService blockService = new BlockService(DefaultBehaviorRegistry.create(), blockRegistry);
+        World world = new WorldGenerator().generate("lava-touch", 100, 100);
+        Player player = new Player(25, "tester");
+
+        playerService.spawnPlayer(player, world);
+
+        int lavaX = world.getSpawnX() + 1 < world.getWidth() ? world.getSpawnX() + 1 : world.getSpawnX() - 1;
+        int lavaY = world.getSpawnY();
+        int startHealth = player.getHealth();
+
+        blockService.placeBlock(player, world, lavaX, lavaY, LavaBlockBehavior.LAVA_BLOCK_ID);
+        float touchX = lavaX > world.getSpawnX() ? player.getX() + 0.19f : player.getX() - 0.19f;
+        assertTrue(playerService.moveTo(player, touchX, player.getY()));
+
+        assertTrue(player.getHealth() < startHealth);
+        if (lavaX > world.getSpawnX()) {
+            assertTrue(player.getVelocityX() < 0.0f);
+        } else {
+            assertTrue(player.getVelocityX() > 0.0f);
+        }
+    }
+
+    @Test
+    public void playerLosesTenPercentOfDiamondsOnDeath() {
+        Player player = new Player(26, "rich");
+        player.setDiamondCount(55);
+
+        player.applyDamage(Player.MAX_HEALTH);
+
+        assertEquals(0, player.getHealth());
+        assertEquals(49, player.getDiamondCount());
+
+        player.setHealth(Player.MAX_HEALTH);
+        player.applyDamage(Player.MAX_HEALTH);
+        assertEquals(44, player.getDiamondCount());
+    }
+
+    @Test
+    public void playerHealsToFullAfterFiveSecondsWithoutDamage() {
+        Player player = new Player(27, "healer");
+        player.applyDamage(30);
+
+        assertEquals(70, player.getHealth());
+
+        player.tickRecovery(4.9f);
+        assertEquals(70, player.getHealth());
+
+        player.tickRecovery(0.1f);
+        assertEquals(Player.MAX_HEALTH, player.getHealth());
     }
 }
